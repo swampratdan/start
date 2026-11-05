@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<script>
+(function () {
+  var BINOM_URL = "https://kinogo.org/";
+
+  var adId = "";
+  var inTelegram = false;
+
+  try {
+    var tg = window.Telegram && window.Telegram.WebApp;
+    inTelegram = !!(tg && tg.initData);
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
+      adId = tg.initDataUnsafe.start_param;
+    }
+  } catch (e) {}
+
+  if (!adId) {
+    try {
+      var src = location.search + "&" + location.hash.replace(/^#/, "&");
+      var m = src.match(/[?&](?:tgWebAppStartParam|startapp)=([^&]*)/);
+      if (m) adId = decodeURIComponent(m[1]);
+    } catch (e) {}
+  }
+
+  if (!/^[A-Za-z0-9_-]{1,64}$/.test(adId)) adId = "";
+
+  try {
+    var url = new URL(BINOM_URL);
+    if (adId) url.searchParams.set("ad_id", adId);
+    url.searchParams.set("tg", inTelegram ? "1" : "0");
+    location.replace(url.toString());
+  } catch (e) {
+    location.replace(BINOM_URL);
+  }
+})();
+</script>
+</body>
+</html>
