@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<script>
+(function () {
+  var BINOM_URL = "https://northwiremedia.com/click?key=16c33d33d90343d7b13a49c852b21878";
+
+  var adId = "";
+  var inTelegram = false;
+
+  try {
+    var qp = new URLSearchParams(location.search);
+    var hp = new URLSearchParams(location.hash.replace(/^#/, ""));
+    var initData = hp.get("tgWebAppData") || "";
+    inTelegram = !!initData;
+    adId = qp.get("tgWebAppStartParam")
+        || hp.get("tgWebAppStartParam")
+        || new URLSearchParams(initData).get("start_param")
+        || qp.get("startapp")
+        || "";
+  } catch (e) {}
+
+  if (!/^[A-Za-z0-9_-]{1,64}$/.test(adId)) adId = "";
+
+  try {
+    var url = new URL(BINOM_URL);
+    if (adId) url.searchParams.set("ad_id", adId);
+    url.searchParams.set("tg", inTelegram ? "1" : "0");
+    location.replace(url.toString());
+  } catch (e) {
+    location.replace(BINOM_URL);
+  }
+})();
+</script>
+</head>
+<body></body>
+</html>
